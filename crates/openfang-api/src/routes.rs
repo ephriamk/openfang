@@ -6994,29 +6994,30 @@ pub async fn set_provider_key(
             .filter(|v| !v.is_empty())
             .is_some()
     };
-    let switched = if !current_has_key && current_provider != name {
-        // Find a default model for the newly-keyed provider
+    let switched = if !current_has_key && current_provider != name
+        && current_provider.is_empty()
+    {
+        // Only auto-switch default_model when the current provider is completely
+        // unconfigured (empty). If the user explicitly set a different provider in
+        // config.toml (e.g. groq), do NOT overwrite it just because a new API key
+        // was saved for another provider.
         let default_model = {
             let catalog = state.kernel.model_catalog.read().unwrap_or_else(|e| e.into_inner());
             catalog.default_model_for_provider(&name)
         };
         if let Some(model_id) = default_model {
-            // Update config.toml to persist the switch
             let config_path = state.kernel.config.home_dir.join("config.toml");
             let update_toml = format!(
                 "\n[default_model]\nprovider = \"{}\"\nmodel = \"{}\"\napi_key_env = \"{}\"\n",
                 name, model_id, env_var
             );
             if let Ok(existing) = std::fs::read_to_string(&config_path) {
-                // Remove existing [default_model] section if present, then append
                 let cleaned = remove_toml_section(&existing, "default_model");
                 let _ = std::fs::write(&config_path, format!("{}\n{}", cleaned.trim(), update_toml));
             } else {
                 let _ = std::fs::write(&config_path, update_toml);
             }
 
-            // Hot-update the in-memory default model override so resolve_driver()
-            // immediately creates drivers for the new provider — no restart needed.
             {
                 let new_dm = openfang_types::config::DefaultModelConfig {
                     provider: name.clone(),

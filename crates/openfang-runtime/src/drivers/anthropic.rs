@@ -471,8 +471,13 @@ impl LlmDriver for AnthropicDriver {
                                 input_json,
                             }) = blocks.get(block_idx)
                             {
-                                let input: serde_json::Value =
+                                let raw: serde_json::Value =
                                     serde_json::from_str(input_json).unwrap_or_default();
+                                let input = if raw.is_null() || !raw.is_object() {
+                                    serde_json::json!({})
+                                } else {
+                                    raw
+                                };
                                 let _ = tx
                                     .send(StreamEvent::ToolUseEnd {
                                         id: id.clone(),
@@ -517,8 +522,13 @@ impl LlmDriver for AnthropicDriver {
                         name,
                         input_json,
                     } => {
-                        let input: serde_json::Value =
+                        let raw: serde_json::Value =
                             serde_json::from_str(&input_json).unwrap_or_default();
+                        let input = if raw.is_null() || !raw.is_object() {
+                            serde_json::json!({})
+                        } else {
+                            raw
+                        };
                         content.push(ContentBlock::ToolUse {
                             id: id.clone(),
                             name: name.clone(),
@@ -573,11 +583,18 @@ fn convert_message(msg: &Message) -> ApiMessage {
                             data: data.clone(),
                         },
                     }),
-                    ContentBlock::ToolUse { id, name, input, .. } => Some(ApiContentBlock::ToolUse {
-                        id: id.clone(),
-                        name: name.clone(),
-                        input: input.clone(),
-                    }),
+                    ContentBlock::ToolUse { id, name, input, .. } => {
+                        let normalized = if input.is_null() || !input.is_object() {
+                            serde_json::json!({})
+                        } else {
+                            input.clone()
+                        };
+                        Some(ApiContentBlock::ToolUse {
+                            id: id.clone(),
+                            name: name.clone(),
+                            input: normalized,
+                        })
+                    }
                     ContentBlock::ToolResult {
                         tool_use_id,
                         content,

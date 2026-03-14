@@ -462,21 +462,12 @@ function wizardPage() {
         return;
       }
 
-      // Use the provider the user just configured, or the template default
-      var provider = tpl.provider;
-      var model = tpl.model;
-      if (this.selectedProviderObj && this.providerIsConfigured(this.selectedProviderObj)) {
-        provider = this.selectedProviderObj.id;
-        // Use a sensible default model for the provider
-        model = this.defaultModelForProvider(provider) || tpl.model;
-      }
-
       var toml = '[agent]\n';
       toml += 'name = "' + wizardTomlBasicEscape(name) + '"\n';
       toml += 'description = "' + wizardTomlBasicEscape(tpl.description) + '"\n';
       toml += 'profile = "' + tpl.profile + '"\n\n';
-      toml += '[model]\nprovider = "' + provider + '"\n';
-      toml += 'model = "' + model + '"\n';
+      toml += '[model]\nprovider = "default"\n';
+      toml += 'model = "default"\n';
       toml += 'system_prompt = """\n' + wizardTomlMultilineEscape(tpl.system_prompt) + '\n"""\n';
 
       this.creatingAgent = true;

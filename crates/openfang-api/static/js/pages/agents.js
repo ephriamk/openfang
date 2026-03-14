@@ -717,7 +717,7 @@ function agentsPage() {
       toml += 'description = "' + tomlBasicEscape(t.description) + '"\n';
       toml += 'module = "builtin:chat"\n';
       toml += 'profile = "' + t.profile + '"\n\n';
-      toml += '[model]\nprovider = "' + t.provider + '"\nmodel = "' + t.model + '"\n';
+      toml += '[model]\nprovider = "default"\nmodel = "default"\n';
       toml += 'system_prompt = """\n' + tomlMultilineEscape(t.system_prompt) + '\n"""\n';
 
       try {
