@@ -22,7 +22,7 @@ function approvalsPage() {
       this.loading = true;
       this.loadError = '';
       try {
-        var data = await OpenFangAPI.get('/api/approvals');
+        var data = await EphAPI.get('/api/approvals');
         this.approvals = data.approvals || [];
       } catch(e) {
         this.loadError = e.message || 'Could not load approvals.';
@@ -32,23 +32,23 @@ function approvalsPage() {
 
     async approve(id) {
       try {
-        await OpenFangAPI.post('/api/approvals/' + id + '/approve', {});
-        OpenFangToast.success('Approved');
+        await EphAPI.post('/api/approvals/' + id + '/approve', {});
+        EphToast.success('Approved');
         await this.loadData();
       } catch(e) {
-        OpenFangToast.error(e.message);
+        EphToast.error(e.message);
       }
     },
 
     async reject(id) {
       var self = this;
-      OpenFangToast.confirm('Reject Action', 'Are you sure you want to reject this action?', async function() {
+      EphToast.confirm('Reject Action', 'Are you sure you want to reject this action?', async function() {
         try {
-          await OpenFangAPI.post('/api/approvals/' + id + '/reject', {});
-          OpenFangToast.success('Rejected');
+          await EphAPI.post('/api/approvals/' + id + '/reject', {});
+          EphToast.success('Rejected');
           await self.loadData();
         } catch(e) {
-          OpenFangToast.error(e.message);
+          EphToast.error(e.message);
         }
       });
     },

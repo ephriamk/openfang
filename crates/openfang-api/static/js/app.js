@@ -89,7 +89,7 @@ function toolIcon(toolName) {
 document.addEventListener('alpine:init', function() {
   // Restore saved API key on load
   var savedKey = localStorage.getItem('openfang-api-key');
-  if (savedKey) OpenFangAPI.setAuthToken(savedKey);
+  if (savedKey) EphAPI.setAuthToken(savedKey);
 
   Alpine.store('app', {
     agents: [],
@@ -114,7 +114,7 @@ document.addEventListener('alpine:init', function() {
 
     async refreshAgents() {
       try {
-        var agents = await OpenFangAPI.get('/api/agents');
+        var agents = await EphAPI.get('/api/agents');
         this.agents = Array.isArray(agents) ? agents : [];
         this.agentCount = this.agents.length;
       } catch(e) { /* silent */ }
@@ -122,7 +122,7 @@ document.addEventListener('alpine:init', function() {
 
     async checkStatus() {
       try {
-        var s = await OpenFangAPI.get('/api/status');
+        var s = await EphAPI.get('/api/status');
         this.connected = true;
         this.booting = false;
         this.lastError = '';
@@ -138,7 +138,7 @@ document.addEventListener('alpine:init', function() {
     async checkOnboarding() {
       if (localStorage.getItem('openfang-onboarded')) return;
       try {
-        var config = await OpenFangAPI.get('/api/config');
+        var config = await EphAPI.get('/api/config');
         var apiKey = config && config.api_key;
         var noKey = !apiKey || apiKey === 'not set' || apiKey === '';
         if (noKey && this.agentCount === 0) {
@@ -158,7 +158,7 @@ document.addEventListener('alpine:init', function() {
     async checkAuth() {
       try {
         // First check if session-based auth is configured
-        var authInfo = await OpenFangAPI.get('/api/auth/check');
+        var authInfo = await EphAPI.get('/api/auth/check');
         if (authInfo.mode === 'none') {
           // No session auth — fall back to API key detection
           this.authMode = 'apikey';
@@ -178,13 +178,13 @@ document.addEventListener('alpine:init', function() {
 
       // API key mode detection
       try {
-        await OpenFangAPI.get('/api/tools');
+        await EphAPI.get('/api/tools');
         this.showAuthPrompt = false;
       } catch(e) {
         if (e.message && (e.message.indexOf('Not authorized') >= 0 || e.message.indexOf('401') >= 0 || e.message.indexOf('Missing Authorization') >= 0 || e.message.indexOf('Unauthorized') >= 0)) {
           var saved = localStorage.getItem('openfang-api-key');
           if (saved) {
-            OpenFangAPI.setAuthToken('');
+            EphAPI.setAuthToken('');
             localStorage.removeItem('openfang-api-key');
           }
           this.showAuthPrompt = true;
@@ -194,7 +194,7 @@ document.addEventListener('alpine:init', function() {
 
     submitApiKey(key) {
       if (!key || !key.trim()) return;
-      OpenFangAPI.setAuthToken(key.trim());
+      EphAPI.setAuthToken(key.trim());
       localStorage.setItem('openfang-api-key', key.trim());
       this.showAuthPrompt = false;
       this.refreshAgents();
@@ -202,29 +202,29 @@ document.addEventListener('alpine:init', function() {
 
     async sessionLogin(username, password) {
       try {
-        var result = await OpenFangAPI.post('/api/auth/login', { username: username, password: password });
+        var result = await EphAPI.post('/api/auth/login', { username: username, password: password });
         if (result.status === 'ok') {
           this.sessionUser = result.username;
           this.showAuthPrompt = false;
           this.refreshAgents();
         } else {
-          OpenFangToast.error(result.error || 'Login failed');
+          EphToast.error(result.error || 'Login failed');
         }
       } catch(e) {
-        OpenFangToast.error(e.message || 'Login failed');
+        EphToast.error(e.message || 'Login failed');
       }
     },
 
     async sessionLogout() {
       try {
-        await OpenFangAPI.post('/api/auth/logout');
+        await EphAPI.post('/api/auth/logout');
       } catch(e) { /* ignore */ }
       this.sessionUser = null;
       this.showAuthPrompt = true;
     },
 
     clearApiKey() {
-      OpenFangAPI.setAuthToken('');
+      EphAPI.setAuthToken('');
       localStorage.removeItem('openfang-api-key');
     }
   });
@@ -310,7 +310,7 @@ function app() {
       });
 
       // Connection state listener
-      OpenFangAPI.onConnectionChange(function(state) {
+      EphAPI.onConnectionChange(function(state) {
         Alpine.store('app').connectionState = state;
       });
 
@@ -355,7 +355,7 @@ function app() {
       this.connected = store.connected;
       this.version = store.version;
       this.agentCount = store.agentCount;
-      this.wsConnected = OpenFangAPI.isWsConnected();
+      this.wsConnected = EphAPI.isWsConnected();
     }
   };
 }

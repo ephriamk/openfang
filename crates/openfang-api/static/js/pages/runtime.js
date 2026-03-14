@@ -19,10 +19,10 @@ document.addEventListener('alpine:init', function() {
         this.loading = true;
         try {
           var results = await Promise.all([
-            OpenFangAPI.get('/api/status'),
-            OpenFangAPI.get('/api/version'),
-            OpenFangAPI.get('/api/providers'),
-            OpenFangAPI.get('/api/agents')
+            EphAPI.get('/api/status'),
+            EphAPI.get('/api/version'),
+            EphAPI.get('/api/providers'),
+            EphAPI.get('/api/agents')
           ]);
           var status = results[0];
           var ver = results[1];

@@ -1,4 +1,4 @@
-//! Embedded WebChat UI served as static HTML.
+//! EphItUpStudio WebChat UI
 //!
 //! The production dashboard is assembled at compile time from separate
 //! HTML/CSS/JS files under `static/` using `include_str!()`. This keeps
@@ -16,7 +16,7 @@ use axum::http::header;
 use axum::response::IntoResponse;
 
 /// Compile-time ETag based on the crate version.
-const ETAG: &str = concat!("\"openfang-", env!("CARGO_PKG_VERSION"), "\"");
+const ETAG: &str = concat!("\"ephitup-", env!("CARGO_PKG_VERSION"), "\"");
 
 /// Embedded logo PNG for single-binary deployment.
 const LOGO_PNG: &[u8] = include_bytes!("../static/logo.png");
@@ -24,7 +24,7 @@ const LOGO_PNG: &[u8] = include_bytes!("../static/logo.png");
 /// Embedded favicon ICO for browser tabs.
 const FAVICON_ICO: &[u8] = include_bytes!("../static/favicon.ico");
 
-/// GET /logo.png — Serve the OpenFang logo.
+/// GET /logo.png — Serve the EphItUpStudio logo.
 pub async fn logo_png() -> impl IntoResponse {
     (
         [
@@ -35,7 +35,7 @@ pub async fn logo_png() -> impl IntoResponse {
     )
 }
 
-/// GET /favicon.ico — Serve the OpenFang favicon.
+/// GET /favicon.ico — Serve the EphItUpStudio favicon.
 pub async fn favicon_ico() -> impl IntoResponse {
     (
         [
@@ -46,7 +46,7 @@ pub async fn favicon_ico() -> impl IntoResponse {
     )
 }
 
-/// GET / — Serve the OpenFang Dashboard single-page application.
+/// GET / — Serve the EphItUpStudio Dashboard single-page application.
 ///
 /// Returns the full SPA with ETag header based on package version for caching.
 pub async fn webchat_page() -> impl IntoResponse {
@@ -63,7 +63,7 @@ pub async fn webchat_page() -> impl IntoResponse {
     )
 }
 
-/// The embedded HTML/CSS/JS for the OpenFang Dashboard.
+/// The embedded HTML/CSS/JS for the EphItUpStudio Dashboard.
 ///
 /// Assembled at compile time from organized static files.
 /// All vendor libraries (Alpine.js, marked.js, highlight.js) are bundled
