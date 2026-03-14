@@ -15,6 +15,7 @@ permissions:
 
 env:
   CARGO_TERM_COLOR: always
+  RELEASE_TAG: ${{ github.event.inputs.tag || github.ref_name }}
 
 jobs:
   cli:
@@ -49,6 +50,7 @@ jobs:
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ env.RELEASE_TAG }}
           files: openfang-${{ matrix.target }}.*
           body: |
             ## AutoLauncher Fork
@@ -60,7 +62,7 @@ jobs:
             **Install:**
             ```bash
             curl -fsSL -o openfang.tar.gz \
-              "https://github.com/ephriamk/openfang/releases/download/${{ github.ref_name }}/openfang-x86_64-unknown-linux-gnu.tar.gz"
+              "https://github.com/ephriamk/openfang/releases/download/${{ env.RELEASE_TAG }}/openfang-x86_64-unknown-linux-gnu.tar.gz"
             tar xzf openfang.tar.gz
             chmod +x openfang
             ```
