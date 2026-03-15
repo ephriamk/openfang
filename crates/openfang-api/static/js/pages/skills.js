@@ -1,4 +1,4 @@
-// OpenFang Skills Page — OpenClaw/ClawHub ecosystem + local skills + MCP servers
+// EphItUpStudio Skills Page — OpenClaw/ClawHub ecosystem + local skills + MCP servers
 'use strict';
 
 function skillsPage() {

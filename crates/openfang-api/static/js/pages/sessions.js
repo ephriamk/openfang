@@ -1,4 +1,4 @@
-// OpenFang Sessions Page — Session listing + Memory tab
+// EphItUpStudio Sessions Page — Session listing + Memory tab
 'use strict';
 
 function sessionsPage() {

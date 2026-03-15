@@ -1,4 +1,4 @@
-// OpenFang Comms Page — Agent topology & inter-agent communication feed
+// EphItUpStudio Comms Page — Agent topology & inter-agent communication feed
 'use strict';
 
 function commsPage() {

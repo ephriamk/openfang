@@ -1,4 +1,4 @@
-// OpenFang Scheduler Page — Cron job management + event triggers unified view
+// EphItUpStudio Scheduler Page — Cron job management + event triggers unified view
 'use strict';
 
 function schedulerPage() {

@@ -1,4 +1,4 @@
-// OpenFang Visual Workflow Builder — Drag-and-drop workflow designer
+// EphItUpStudio Visual Workflow Builder — Drag-and-drop workflow designer
 'use strict';
 
 function workflowBuilder() {
@@ -28,13 +28,13 @@ function workflowBuilder() {
 
     // Node types with their configs
     nodeTypes: [
-      { type: 'agent', label: 'Agent Step', color: '#6366f1', icon: 'A', ports: { in: 1, out: 1 } },
-      { type: 'parallel', label: 'Parallel Fan-out', color: '#f59e0b', icon: 'P', ports: { in: 1, out: 3 } },
-      { type: 'condition', label: 'Condition', color: '#10b981', icon: '?', ports: { in: 1, out: 2 } },
-      { type: 'loop', label: 'Loop', color: '#ef4444', icon: 'L', ports: { in: 1, out: 1 } },
-      { type: 'collect', label: 'Collect', color: '#8b5cf6', icon: 'C', ports: { in: 3, out: 1 } },
-      { type: 'start', label: 'Start', color: '#22c55e', icon: 'S', ports: { in: 0, out: 1 } },
-      { type: 'end', label: 'End', color: '#ef4444', icon: 'E', ports: { in: 1, out: 0 } }
+      { type: 'agent', label: 'Agent Step', color: '#0A84FF', icon: 'A', ports: { in: 1, out: 1 } },
+      { type: 'parallel', label: 'Parallel Fan-out', color: '#FF9F0A', icon: 'P', ports: { in: 1, out: 3 } },
+      { type: 'condition', label: 'Condition', color: '#34C759', icon: '?', ports: { in: 1, out: 2 } },
+      { type: 'loop', label: 'Loop', color: '#BF5AF2', icon: 'L', ports: { in: 1, out: 1 } },
+      { type: 'collect', label: 'Collect', color: '#64D2FF', icon: 'C', ports: { in: 3, out: 1 } },
+      { type: 'start', label: 'Start', color: '#34D399', icon: 'S', ports: { in: 0, out: 1 } },
+      { type: 'end', label: 'End', color: '#FF453A', icon: 'E', ports: { in: 1, out: 0 } }
     ],
 
     _renderScheduled: false,

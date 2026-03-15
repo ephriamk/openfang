@@ -1,4 +1,4 @@
-// OpenFang Chat Page — Agent chat with markdown + streaming
+// EphItUpStudio Chat Page — Agent chat with markdown + streaming
 'use strict';
 
 function chatPage() {
@@ -86,10 +86,10 @@ function chatPage() {
     // Context pressure dot color
     get contextDotColor() {
       switch (this.contextPressure) {
-        case 'critical': return '#ef4444';
-        case 'high': return '#f97316';
-        case 'medium': return '#eab308';
-        default: return '#22c55e';
+        case 'critical': return 'var(--error)';
+        case 'high': return 'var(--warning)';
+        case 'medium': return '#FFD60A';
+        default: return 'var(--success)';
       }
     },
 
@@ -869,7 +869,7 @@ function chatPage() {
           canvasHtml += '<span>' + (data.title || 'Canvas') + '</span>';
           canvasHtml += '<span style="opacity:0.5;font-size:0.8em;">' + (data.canvas_id || '').substring(0, 8) + '</span></div>';
           canvasHtml += '<iframe sandbox="allow-scripts" srcdoc="' + (data.html || '').replace(/"/g, '&quot;') + '" ';
-          canvasHtml += 'style="width:100%;min-height:300px;border:none;background:#fff;" loading="lazy"></iframe></div>';
+          canvasHtml += 'style="width:100%;min-height:300px;border:none;background:var(--bg-primary);" loading="lazy"></iframe></div>';
           this.messages.push({ id: ++msgId, role: 'agent', text: canvasHtml, meta: 'canvas', isHtml: true, tools: [] });
           this.scrollToBottom();
           break;
